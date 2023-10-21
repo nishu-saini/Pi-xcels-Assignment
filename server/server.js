@@ -1,7 +1,23 @@
 const express = require("express");
 const path = require("path");
+const dotenv = require("dotenv");
+const data = require("./movies_metadata.json");
+const cors = require("cors");
+
+dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: ["http://localhost:3002"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
+// middleware
+app.use(express.json());
 
 // A test route to make sure the server is up.
 app.get("/api/ping", (request, response) => {
@@ -10,9 +26,28 @@ app.get("/api/ping", (request, response) => {
 });
 
 // A mock route to return some data.
-app.get("/api/movies", (request, response) => {
-  console.log("❇️ Received GET request to /api/movies");
-  response.json({ data: [{ id: 1, name: '1' }, { id: 2, name: '2' }] });
+app.get("/api/movies", (req, res) => {
+  if (!data) {
+    return res.status(404).json({
+      message: "Data Not Found",
+    });
+  }
+
+  res.status(200).json(data);
+});
+
+app.get("/api/movie/:id", (req, res) => {
+  const id = req.params.id;
+
+  const movie = data.filter((movie) => movie.id === parseInt(id));
+
+  if (!movie) {
+    return res.status(404).json({
+      message: "Movie not found",
+    });
+  }
+
+  res.status(200).json(movie);
 });
 
 // Express port-switching logic

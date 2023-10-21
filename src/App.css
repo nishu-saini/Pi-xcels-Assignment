@@ -1,3 +1,24 @@
+.movie-info {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto;
+  background-color: #f7f7f7;
+}
+
+.title {
+  font-size: 1.5em;
+  color: #333;
+}
+
+.tagline {
+  font-style: italic;
+  margin-top: 10px;
+  color: #555;
+}
+
 .App {
   text-align: center;
 }
